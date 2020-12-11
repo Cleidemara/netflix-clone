@@ -4,13 +4,13 @@ import "./style.css";
 import axios from "axios";
 
 
-
 class Netflix extends Component {
   state = {
     movies: [],
     //shows: [],
   };
 
+  
 //movies
   async componentDidMount() {
     const response = await axios.get(`${process.env.REACT_APP_API}/movies`)
