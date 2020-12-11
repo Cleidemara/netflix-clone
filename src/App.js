@@ -7,18 +7,20 @@ import axios from "axios";
 
 class Netflix extends Component {
   state = {
-    movie: [],
+    movies: [],
+    //shows: [],
   };
 
+//movies
   async componentDidMount() {
     const response = await axios.get(`${process.env.REACT_APP_API}/movies`)
+    console.log(response.data)
+    
+      this.setState({
+        movies: response.data
+    })
 
-      
-    this.setState({
-      movie: response.data
-    });
-
-
+    //image-poster-movies-shows
     const filmes = response.data.map((item) => {
       return {
         ...item,
@@ -27,36 +29,43 @@ class Netflix extends Component {
     });
 
     this.setState({
-    movie: filmes
-})
+    movies: filmes
+});
 
-         
-  }
+
+
+}   
+
   
-  render (){
-    console.log("teste-r", this.state.movie)
-    return (
+  render () {
+    console.log("teste-r", this.state.movies)
+    return ( 
       <div>
-        <header>
-          
-        </header>
-        <h1 className = "title-movie">NetMovie</h1>
-        <div>
-       {this.state.movie.map((item,index) =>(
-         <div key={index} className="box-map-return">
-          <h2 className ="subtitle-movie">{item.title}</h2>
-          <p className = "Date">{item.release_date}</p>
-          <p className ="Description">{item.overview}</p>
-          <img src={item.poster_path} alt="poster" />
-                 
-         </div>
-       ))}
-
+        <div className = "box-title">
+        <h1 className = "title-movies">NetMovies</h1>
+        <ul className = "box-menu">
+          <li className = "menu">FILMES</li>
+          <li className = "menu">SERIES</li>
+          <li className = "menu">TV</li>
+        </ul>
+        </div>
+         <div>
+           {this.state.movies.map((item,index) =>(
+            <div key={index} className="box-movies-map-return">
+              <div className = "box-movies-description">
+              <h2 className ="subtitle-movies">{item.title}</h2>
+              <p className = "Date">{item.release_date}</p>
+              <p className ="Description">{item.overview}</p>
+              </div>
+              <div className = "box-poster"> 
+            <img className = "posterFilme" src={item.poster_path} alt="poster-movies" /> 
+            </div>                  
+          </div>
+        ))}
       </div>
-      </div>
-      
+  
+      </div>           
     )    
   }
 }
-
 export default Netflix;
