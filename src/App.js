@@ -7,21 +7,29 @@ import axios from "axios";
 class Netflix extends Component {
   state = {
     movies: [],
-    //shows: [],
+    shows: [],
   };
 
   
 //movies
   async componentDidMount() {
-    const response = await axios.get(`${process.env.REACT_APP_API}/movies`)
-    console.log(response.data)
-    
-      this.setState({
-        movies: response.data
-    })
+    const responseMovies = await axios.get(`${process.env.REACT_APP_API}/movies`);
+    console.log(responseMovies.data)
 
-    //image-poster-movies-shows
-    const filmes = response.data.map((item) => {
+    const responseShows = await axios.get(`${process.env.REACT_APP_API}/shows`)
+    console.log(responseShows.data)
+      
+          
+      this.setState({
+        movies: responseMovies.data
+    });
+
+     this.setState({
+     shows: responseShows.data
+    });
+    
+    //image-poster-movies
+    const filmes = responseMovies.data.map((item) => {
       return {
         ...item,
         poster_path: `https://image.tmdb.org/t/p/w500${item.poster_path}`
@@ -32,6 +40,16 @@ class Netflix extends Component {
     movies: filmes
 });
 
+const series = responseShows.data.map((item) => {
+  return {
+    ...item,
+    poster_path: `https://image.tmdb.org/t/p/w500${item.poster_path}`
+  };
+});
+
+this.setState({
+shows: series
+});
 
 
 }   
@@ -44,15 +62,15 @@ class Netflix extends Component {
         <div className = "box-title">
         <h1 className = "title-movies">NetMovies</h1>
         <ul className = "box-menu">
-          <li className = "menu">FILMES</li>
-          <li className = "menu">SERIES</li>
-          <li className = "menu">TV</li>
+          <li className = "menu">MOVIES</li>
+          <li className = "menu">SHOWS</li>
+          <li className = "menu">SEARCH</li>
         </ul>
         </div>
          <div>
            {this.state.movies.map((item,index) =>(
             <div key={index} className="box-movies-map-return">
-              <div className = "box-movies-description">
+              <div className = "box-description">
               <h2 className ="subtitle-movies">{item.title}</h2>
               <p className = "Date">{item.release_date}</p>
               <p className ="Description">{item.overview}</p>
@@ -63,9 +81,33 @@ class Netflix extends Component {
           </div>
         ))}
       </div>
+      <div>
+      <div className = "box-title">
+        <h1 className = "title-movies">NetShows</h1>
+        <ul className = "box-menu">
+          <li className = "menu">MOVIES</li>
+          <li className = "menu">SHOWS</li>
+          <li className = "menu">SEARCH</li>
+        </ul>
+        </div>
+      </div>
+      <div>
+           {this.state.shows.map((item,index) =>(
+            <div key={index} className="box-shows-map-return">
+              <div className = "box-poster"> 
+            <img className = "posterSeries" src={item.poster_path} alt="poster-series" /> 
+            </div>
+              <div className = "box-shows-description">              
+              <h2 className ="subtitle-shows">{item.name}</h2>
+              <p className = "vote">Mais Populares {item.vote_average}</p>
+              <p className ="Description">{item.overview}</p>
+              </div>                        
+          </div>
+        ))}
+      </div>
   
       </div>           
-    )    
+    );   
   }
 }
 export default Netflix;
