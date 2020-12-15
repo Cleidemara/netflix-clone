@@ -11,7 +11,7 @@ class Netflix extends Component {
   };
 
   
-//movies
+//movies/ shows === filmes/series
   async componentDidMount() {
     const responseMovies = await axios.get(`${process.env.REACT_APP_API}/movies`);
     console.log(responseMovies.data)
@@ -53,10 +53,9 @@ shows: series
 
 
 }   
-
   
   render () {
-    console.log("teste-r", this.state.movies)
+    
     return ( 
       <div>
         <div className = "box-title">
@@ -75,7 +74,7 @@ shows: series
               <p className = "Date">{item.release_date}</p>
               <p className ="Description">{item.overview}</p>
               </div>
-              <div className = "box-poster"> 
+              <div className = "box-posterFilmes"> 
             <img className = "posterFilme" src={item.poster_path} alt="poster-movies" /> 
             </div>                  
           </div>
@@ -94,7 +93,7 @@ shows: series
       <div>
            {this.state.shows.map((item,index) =>(
             <div key={index} className="box-shows-map-return">
-              <div className = "box-poster"> 
+              <div className = "box-posterSeries"> 
             <img className = "posterSeries" src={item.poster_path} alt="poster-series" /> 
             </div>
               <div className = "box-shows-description">              
